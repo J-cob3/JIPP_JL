@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Podłączenie bazy danych
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=JippJl;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseInMemoryDatabase("AppDb"));
 
 var app = builder.Build();
 
@@ -19,7 +19,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
