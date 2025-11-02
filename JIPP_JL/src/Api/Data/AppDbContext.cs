@@ -8,15 +8,30 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<UserTask> UserTasks => Set<UserTask>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>(e =>
+        modelBuilder.Entity<User>(builder=>
         {
-            e.ToTable("Users");
-            e.HasKey(x => x.Id);
-            e.Property(x => x.Username).IsRequired().HasMaxLength(100);
-            e.Property(x => x.Email).IsRequired().HasMaxLength(200);
+            builder.ToTable("Users");
+            builder.HasKey(user => user.Id);
+            builder.Property(user => user.Username).IsRequired().HasMaxLength(100);
+            builder.Property(user => user.Email).IsRequired().HasMaxLength(200);
+
+            builder.HasMany(user => user.Tasks)
+                   .WithOne(task => task.User!)
+                   .HasForeignKey(task => task.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
         });
+        
+        modelBuilder.Entity<UserTask>(builder =>
+    {
+        builder.ToTable("Tasks");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Title).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.Description).HasMaxLength(1000);
+        builder.Property(x => x.DueDate);
+    });
     }
 }

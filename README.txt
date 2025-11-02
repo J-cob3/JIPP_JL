@@ -29,4 +29,8 @@ Invoke-RestMethod -Method Put -ContentType 'application/json' -Body '{"username"
 # DELETE: usuwanie
 Invoke-RestMethod -Method Delete http://localhost:(port)/users/1
 
+Tydzień 4
+dodanie userowi testowego taska
+Invoke-WebRequest -Uri "http://localhost:(port)/tasks" -Method POST -ContentType "application/json" -Body '{"Title":"Testtitle","Description":"test OK","UserID":1}'
+
 

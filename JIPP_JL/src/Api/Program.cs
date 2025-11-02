@@ -12,9 +12,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 
 // Podłączenie bazy danych
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("AppDb"));
-
+var connection = builder.Configuration.GetConnectionString("Sql");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+    
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -25,4 +25,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapUsers();
+app.MapTasks();
 app.Run();
+
+public partial class Program { }
