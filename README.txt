@@ -14,7 +14,7 @@ http://localhost:(numer portu)/api/v1/health
 
 Tydzień 2
 dodanie nowego uzytkownika do bazy
-Invoke-WebRequest -Uri "http://localhost:(numer portu)/users" -Method POST -ContentType "application/json" -Body '{"username":"(nazwa użytkownika)","email":"(nazwa maila)"}'
+Invoke-WebRequest -Uri "http://localhost:(numer portu)/users" -Method POST -ContentType "application/json" -Body '{"username":"test","email":"test@test.test"}'
 http://localhost:(nazwa portu)/users -wszyscy użytkownicy
 
 Tydzień 3

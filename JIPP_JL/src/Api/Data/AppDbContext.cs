@@ -8,7 +8,7 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
-    public DbSet<UserTask> UserTasks => Set<UserTask>();
+    public DbSet<UserTask> Tasks => Set<UserTask>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -16,8 +16,11 @@ public class AppDbContext : DbContext
         {
             builder.ToTable("Users");
             builder.HasKey(user => user.Id);
-            builder.Property(user => user.Username).IsRequired().HasMaxLength(100);
+            builder.HasIndex(user => user.Username).IsUnique();
+            builder.HasIndex(user => user.Email).IsUnique();
             builder.Property(user => user.Email).IsRequired().HasMaxLength(200);
+            builder.Property(user => user.PasswordHash).IsRequired().HasMaxLength(512);
+            
 
             builder.HasMany(user => user.Tasks)
                    .WithOne(task => task.User!)
