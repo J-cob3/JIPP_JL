@@ -27,6 +27,7 @@ public static class TasksEndpoints
             db.UserTasks.Add(task);
             await db.SaveChangesAsync();
             return Results.Created($"/tasks/{task.Id}", task);
-        });
+        })
+        .RequireAuthorization();
     }
 }

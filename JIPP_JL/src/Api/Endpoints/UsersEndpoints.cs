@@ -71,7 +71,7 @@ public static class UsersEndpoints
 
         app.MapGet("/users/{id}/tasks", async (int id, AppDbContext db) =>
         {
-            var tasks = await db.Tasks.AsNoTracking()
+            var tasks = await db.UserTasks.AsNoTracking()
                 .Where(t => t.UserId == id)
                 .ToListAsync();
             if (!tasks.Any())
