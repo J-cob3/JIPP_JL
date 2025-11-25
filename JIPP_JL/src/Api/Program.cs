@@ -9,6 +9,7 @@ using System.Text;
 using Api.Endpoints;
 using Api.Data;
 using Api.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+builder.Host.UseSerilog((context, services, config) =>
+    config.ReadFrom.Configuration(context.Configuration)
+          .ReadFrom.Services(services)
+          .Enrich.FromLogContext()
+          .WriteTo.Console()
+          .WriteTo.File(Path.Combine(AppContext.BaseDirectory, "Logs", "api-.log"), rollingInterval: RollingInterval.Day));
+
 builder.Host.ConfigureLogging(logging =>
 {
     logging.ClearProviders();
@@ -87,11 +95,16 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }))
    .AllowAnonymous();
 
+app.MapGet("/hello/{name}", (string name) => $"Hello, {name}!")
+   .AllowAnonymous();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapUsers(jwtKeyBytes, jwtIssuer, jwtAudience);
 app.MapTasks();
 app.Run();
+
+app.Lifetime.ApplicationStopped.Register(Log.CloseAndFlush);
 
 public partial class Program { }
