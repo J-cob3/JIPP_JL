@@ -1492,3 +1492,13 @@ C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\D
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.pdb
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.genruntimeconfig.cache
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\ref\Api.Tests.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.AspNetCore.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Extensions.Hosting.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Extensions.Logging.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Formatting.Compact.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Settings.Configuration.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Sinks.Console.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\bin\Debug\net9.0\Serilog.Sinks.File.dll

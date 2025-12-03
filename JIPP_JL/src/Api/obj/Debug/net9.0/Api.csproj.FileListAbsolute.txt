@@ -557,3 +557,4 @@ C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.Console.dll
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.File.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\AutoMapper.dll

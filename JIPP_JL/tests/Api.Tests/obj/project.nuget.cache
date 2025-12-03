@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "MSW0n92mBt0=",
+  "dgSpecHash": "38s5dFDW2/c=",
   "success": true,
   "projectFilePath": "C:\\Users\\kubal\\Documents\\GitHub\\JIPP_JL(2)\\JIPP_JL\\JIPP_JL\\tests\\Api.Tests\\Api.Tests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\kubal\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\kubal\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\kubal\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\kubal\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",

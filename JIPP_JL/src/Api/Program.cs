@@ -13,22 +13,44 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- 1. KONFIGURACJA SERWISÓW (Przed Build) ---
+
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
+// Dla .NET 9 warto dodać AddOpenApi() jeśli używasz MapOpenApi()
+builder.Services.AddOpenApi(); 
 
-// Podłączenie bazy danych
+// Baza danych
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=jippjl.db"));
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
+// Konfiguracja JSON (cykle)
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
+// JWT Configuration
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var jwtIssuer = jwtSection.GetValue<string>("Issuer");
 var jwtAudience = jwtSection.GetValue<string>("Audience");
-var jwtKeyBytes = RandomNumberGenerator.GetBytes(32);
+// ZMIANA: Pobieramy klucz z configu, żeby tokeny działały po restarcie. 
+// Jeśli brak w configu - generujemy losowy (tylko dla dev).
+var jwtKeyString = jwtSection.GetValue<string>("Key");
+byte[] jwtKeyBytes;
+
+if (!string.IsNullOrEmpty(jwtKeyString))
+{
+    jwtKeyBytes = Encoding.UTF8.GetBytes(jwtKeyString);
+}
+else
+{
+    // Fallback dla bezpieczeństwa dev
+    jwtKeyBytes = RandomNumberGenerator.GetBytes(32);
+}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -50,6 +72,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+// Serilog Configuration
 builder.Host.UseSerilog((context, services, config) =>
     config.ReadFrom.Configuration(context.Configuration)
           .ReadFrom.Services(services)
@@ -57,20 +80,19 @@ builder.Host.UseSerilog((context, services, config) =>
           .WriteTo.Console()
           .WriteTo.File(Path.Combine(AppContext.BaseDirectory, "Logs", "api-.log"), rollingInterval: RollingInterval.Day));
 
-builder.Host.ConfigureLogging(logging =>
-{
-    logging.ClearProviders();
-    logging.AddConsole();
-});
+// USUNIĘTO: builder.Host.ConfigureLogging(...) - Serilog to obsługuje.
 
+// --- 2. BUDOWANIE APLIKACJI ---
 var app = builder.Build();
 
+// Migracje przy starcie
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
+// Obsługa błędów
 app.UseExceptionHandler(handler =>
 {
     handler.Run(async context =>
@@ -78,6 +100,7 @@ app.UseExceptionHandler(handler =>
         var feature = context.Features.Get<IExceptionHandlerPathFeature>();
         if (feature is not null)
         {
+            // Używamy app.Logger (który teraz jest Serilogiem)
             app.Logger.LogError(feature.Error, "Unhandled exception at {Path}", feature.Path);
         }
 
@@ -92,6 +115,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// USUNIĘTO: Zduplikowany AddDbContext po Build() - to powodowało błąd!
+
+// --- 3. PIPELINE I ENDPOINTY ---
+
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }))
    .AllowAnonymous();
 
@@ -103,8 +130,10 @@ app.UseAuthorization();
 
 app.MapUsers(jwtKeyBytes, jwtIssuer, jwtAudience);
 app.MapTasks();
-app.Run();
 
+// Logowanie zamknięcia aplikacji
 app.Lifetime.ApplicationStopped.Register(Log.CloseAndFlush);
+
+app.Run();
 
 public partial class Program { }

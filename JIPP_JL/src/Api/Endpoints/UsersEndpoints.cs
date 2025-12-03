@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Api.Data;
 using Api.Models;
 using Api.Mappers;
+using AutoMapper; // Dodaj namespace
 
 namespace Api.Endpoints;
 
@@ -15,14 +16,29 @@ public static class UsersEndpoints
 {
     public static void MapUsers(this WebApplication app, byte[] jwtKey, string? jwtIssuer, string? jwtAudience)
     {
-        app.MapGet("/users", async (AppDbContext db) =>
+        // Zmiana: wstrzykujemy IMapper
+        app.MapGet("/users", async (AppDbContext db, IMapper mapper) =>
         {
             var users = await db.Users.AsNoTracking().ToListAsync();
-            return Results.Ok(users.Select(u => u.ToDto()));
+            return Results.Ok(mapper.Map<List<UserDto>>(users));
         });
 
-        // Dodajemy ILogger do parametrów
-        app.MapPost("/users", async (AppDbContext db, UserDto dto, ILogger<Program> logger) =>
+        // NOWY ENDPOINT: Raport
+        app.MapGet("/reports/new-users", async (DateTime? from, DateTime? to, AppDbContext db, IMapper mapper) =>
+        {
+            var query = db.Users.AsNoTracking().AsQueryable();
+
+            if (from.HasValue)
+                query = query.Where(u => u.CreatedAt >= from.Value);
+            
+            if (to.HasValue)
+                query = query.Where(u => u.CreatedAt <= to.Value);
+
+            var users = await query.ToListAsync();
+            return Results.Ok(mapper.Map<List<UserDto>>(users));
+        });
+
+        app.MapPost("/users", async (AppDbContext db, UserDto dto, ILogger<Program> logger, IMapper mapper) =>
         {
             // Ręczna walidacja DataAnnotations
             var validationResults = new List<ValidationResult>();
@@ -32,21 +48,26 @@ public static class UsersEndpoints
                 return Results.BadRequest(validationResults.Select(x => x.ErrorMessage));
             }
 
-            var user = new User { Username = dto.Username.Trim(), Email = dto.Email.Trim() };
-            db.Users.Add(user);
+            var user = new User 
+            { 
+                Username = dto.Username.Trim(), 
+                Email = dto.Email.Trim(),
+                CreatedAt = DateTime.UtcNow // Ustawiamy datę
+            };
             
+            db.Users.Add(user);
             await db.SaveChangesAsync();
             
-            // Logowanie zdarzenia
             logger.LogInformation("Utworzono nowego użytkownika: {Username} ({Email})", user.Username, user.Email);
 
-            return Results.Created($"/users/{user.Id}", user.ToDto());
+            // Użycie mappera w odpowiedzi
+            return Results.Created($"/users/{user.Id}", mapper.Map<UserDto>(user));
         });
 
-        app.MapGet("/users/{id}", async (int id, AppDbContext db) =>
+        app.MapGet("/users/{id}", async (int id, AppDbContext db, IMapper mapper) =>
         {
             var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
-            return user is null ? Results.NotFound() : Results.Ok(user.ToDto());
+            return user is null ? Results.NotFound() : Results.Ok(mapper.Map<UserDto>(user));
         });
 
         app.MapPut("/users/{id}", async (int id, AppDbContext db, UserDto dto, ILogger<Program> logger) =>
