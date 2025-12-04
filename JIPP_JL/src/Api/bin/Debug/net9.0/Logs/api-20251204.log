@@ -1,0 +1,197 @@
+2025-12-04 23:11:10.786 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-04 23:11:10.848 +01:00 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-04 23:11:10.852 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:10.85196+00:00');
+SELECT changes();
+2025-12-04 23:11:11.859 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:11.8594107+00:00');
+SELECT changes();
+2025-12-04 23:11:13.866 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:13.8656855+00:00');
+SELECT changes();
+2025-12-04 23:11:17.877 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:17.8776076+00:00');
+SELECT changes();
+2025-12-04 23:11:25.881 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:25.8807376+00:00');
+SELECT changes();
+2025-12-04 23:11:41.884 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:11:41.8845087+00:00');
+SELECT changes();
+2025-12-04 23:13:45.785 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-04 23:13:45.820 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-04 23:13:45.824 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:13:45.8241782+00:00');
+SELECT changes();
+2025-12-04 23:13:46.830 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:13:46.830174+00:00');
+SELECT changes();
+2025-12-04 23:13:48.840 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:13:48.8403715+00:00');
+SELECT changes();
+2025-12-04 23:13:52.852 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:13:52.852119+00:00');
+SELECT changes();
+2025-12-04 23:14:00.868 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:14:00.8679042+00:00');
+SELECT changes();
+2025-12-04 23:14:16.877 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:14:16.8774717+00:00');
+SELECT changes();
+2025-12-04 23:16:10.515 +01:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2025-12-04 23:16:10.536 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-04 23:16:10.546 +01:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-04 23:16:10.549 +01:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsLock" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK___EFMigrationsLock" PRIMARY KEY,
+    "Timestamp" TEXT NOT NULL
+);
+2025-12-04 23:16:10.552 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:16:10.551306+00:00');
+SELECT changes();
+2025-12-04 23:16:10.575 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-04 23:16:10.581 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-04 23:16:10.583 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-04 23:16:10.588 +01:00 [INF] Applying migration '20251106135956_InitialCreate'.
+2025-12-04 23:16:10.593 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Users" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY AUTOINCREMENT,
+    "Username" TEXT NOT NULL,
+    "Email" TEXT NOT NULL
+);
+2025-12-04 23:16:10.594 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Tasks" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Tasks" PRIMARY KEY AUTOINCREMENT,
+    "Title" TEXT NOT NULL,
+    "Description" TEXT NULL,
+    "DueDate" TEXT NULL,
+    "UserId" INTEGER NOT NULL,
+    CONSTRAINT "FK_Tasks_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id") ON DELETE CASCADE
+);
+2025-12-04 23:16:10.596 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Tasks_UserId" ON "Tasks" ("UserId");
+2025-12-04 23:16:10.597 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20251106135956_InitialCreate', '9.0.10');
+2025-12-04 23:16:10.598 +01:00 [INF] Applying migration '20251121161325_AddUserTasks'.
+2025-12-04 23:16:10.600 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "PasswordHash" TEXT NOT NULL DEFAULT '';
+2025-12-04 23:16:10.601 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
+2025-12-04 23:16:10.602 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Username" ON "Users" ("Username");
+2025-12-04 23:16:10.604 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20251121161325_AddUserTasks', '9.0.10');
+2025-12-04 23:16:10.605 +01:00 [INF] Applying migration '20251203102801_AddCreatedAt'.
+2025-12-04 23:16:10.607 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "CreatedAt" TEXT NOT NULL DEFAULT '0001-01-01 00:00:00';
+2025-12-04 23:16:10.608 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20251203102801_AddCreatedAt', '9.0.10');
+2025-12-04 23:16:10.611 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "__EFMigrationsLock";
+2025-12-04 23:16:10.624 +01:00 [INF] User profile is available. Using 'C:\Users\kubal\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-04 23:16:10.682 +01:00 [INF] Now listening on: http://localhost:5109
+2025-12-04 23:16:10.684 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-04 23:16:10.684 +01:00 [INF] Hosting environment: Development
+2025-12-04 23:16:10.684 +01:00 [INF] Content root path: C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api
+2025-12-04 23:16:14.982 +01:00 [INF] Application is shutting down...
+2025-12-04 23:16:19.055 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-04 23:16:19.087 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-04 23:16:19.095 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:16:19.0911293+00:00');
+SELECT changes();
+2025-12-04 23:16:19.122 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-04 23:16:19.127 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-04 23:16:19.129 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-04 23:16:19.134 +01:00 [INF] No migrations were applied. The database is already up to date.
+2025-12-04 23:16:19.135 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "__EFMigrationsLock";
+2025-12-04 23:16:19.152 +01:00 [INF] User profile is available. Using 'C:\Users\kubal\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-04 23:16:19.216 +01:00 [INF] Now listening on: http://localhost:5109
+2025-12-04 23:16:19.217 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-04 23:16:19.218 +01:00 [INF] Hosting environment: Development
+2025-12-04 23:16:19.218 +01:00 [INF] Content root path: C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api
+2025-12-04 23:16:51.588 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/ - null null
+2025-12-04 23:16:51.625 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/ - 404 0 null 38.2135ms
+2025-12-04 23:16:51.631 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5109/, Response status code: 404
+2025-12-04 23:16:52.696 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/ - null null
+2025-12-04 23:16:52.699 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/ - 404 0 null 2.6059ms
+2025-12-04 23:16:52.701 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5109/, Response status code: 404
+2025-12-04 23:16:53.091 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/ - null null
+2025-12-04 23:16:53.094 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/ - 404 0 null 3.0234ms
+2025-12-04 23:16:53.095 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5109/, Response status code: 404
+2025-12-04 23:16:53.567 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/ - null null
+2025-12-04 23:16:53.568 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/ - 404 0 null 1.6152ms
+2025-12-04 23:16:53.571 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5109/, Response status code: 404
+2025-12-04 23:17:02.999 +01:00 [INF] Application is shutting down...
+2025-12-04 23:17:34.276 +01:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-04 23:17:34.306 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsLock' AND "type" = 'table';
+2025-12-04 23:17:34.316 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT OR IGNORE INTO "__EFMigrationsLock"("Id", "Timestamp") VALUES(1, '2025-12-04 22:17:34.3105236+00:00');
+SELECT changes();
+2025-12-04 23:17:34.340 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-04 23:17:34.344 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-04 23:17:34.346 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-04 23:17:34.350 +01:00 [INF] No migrations were applied. The database is already up to date.
+2025-12-04 23:17:34.351 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "__EFMigrationsLock";
+2025-12-04 23:17:34.367 +01:00 [INF] User profile is available. Using 'C:\Users\kubal\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-04 23:17:34.425 +01:00 [INF] Now listening on: http://localhost:5109
+2025-12-04 23:17:34.426 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-04 23:17:34.427 +01:00 [INF] Hosting environment: Development
+2025-12-04 23:17:34.427 +01:00 [INF] Content root path: C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api
+2025-12-04 23:17:58.208 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/health - null null
+2025-12-04 23:17:58.240 +01:00 [INF] Executing endpoint 'HTTP: GET /health'
+2025-12-04 23:17:58.243 +01:00 [INF] Setting HTTP status code 200.
+2025-12-04 23:17:58.246 +01:00 [INF] Writing value of type '<>f__AnonymousType3`1' as Json.
+2025-12-04 23:17:58.249 +01:00 [INF] Executed endpoint 'HTTP: GET /health'
+2025-12-04 23:17:58.250 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/health - 200 null application/json; charset=utf-8 42.6484ms
+2025-12-04 23:17:58.364 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/favicon.ico - null null
+2025-12-04 23:17:58.367 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/favicon.ico - 404 0 null 3.2141ms
+2025-12-04 23:17:58.369 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5109/favicon.ico, Response status code: 404
+2025-12-04 23:18:17.443 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/hello/World - null null
+2025-12-04 23:18:17.447 +01:00 [INF] Executing endpoint 'HTTP: GET /hello/{name}'
+2025-12-04 23:18:17.448 +01:00 [INF] Executed endpoint 'HTTP: GET /hello/{name}'
+2025-12-04 23:18:17.449 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/hello/World - 200 null text/plain; charset=utf-8 6.2309ms
+2025-12-04 23:18:25.874 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5109/users - null null
+2025-12-04 23:18:25.876 +01:00 [INF] Executing endpoint 'HTTP: GET /users'
+2025-12-04 23:18:26.016 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."Id", "u"."CreatedAt", "u"."Email", "u"."PasswordHash", "u"."Username"
+FROM "Users" AS "u"
+2025-12-04 23:18:26.025 +01:00 [INF] Setting HTTP status code 200.
+2025-12-04 23:18:26.027 +01:00 [INF] Writing value of type 'List`1' as Json.
+2025-12-04 23:18:26.028 +01:00 [INF] Executed endpoint 'HTTP: GET /users'
+2025-12-04 23:18:26.030 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5109/users - 200 null application/json; charset=utf-8 155.6323ms
+2025-12-04 23:20:36.643 +01:00 [INF] Application is shutting down...

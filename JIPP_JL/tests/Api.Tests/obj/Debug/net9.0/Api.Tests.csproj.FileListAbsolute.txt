@@ -1485,7 +1485,6 @@ C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\D
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.AssemblyInfoInputs.cache
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.AssemblyInfo.cs
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.csproj.CoreCompileInputs.cache
-C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.sourcelink.json
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.csproj.Up2Date
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\Api.Tests.dll
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\tests\Api.Tests\obj\Debug\net9.0\refint\Api.Tests.dll

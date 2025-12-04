@@ -14,165 +14,163 @@ namespace Api.Endpoints;
 
 public static class UsersEndpoints
 {
-    public static void MapUsers(this WebApplication app, byte[] jwtKey, string? jwtIssuer, string? jwtAudience)
+    public static void MapUsers(this WebApplication app, byte[] jwtKeyBytes, string jwtIssuer, string jwtAudience)
     {
-        // Zmiana: wstrzykujemy IMapper
-        app.MapGet("/users", async (AppDbContext db, IMapper mapper) =>
+        var group = app.MapGroup("/users").WithTags("Users");
+
+        group.MapGet("/", GetUsers).AllowAnonymous();
+        group.MapGet("/{id}", GetUser).AllowAnonymous();
+        group.MapPost("/", CreateUser).AllowAnonymous();
+        group.MapPut("/{id}", UpdateUser).RequireAuthorization();
+        group.MapDelete("/{id}", DeleteUser).RequireAuthorization();
+        
+        group.MapPost("/register", Register).AllowAnonymous();
+        group.MapPost("/login", (AppDbContext db, LoginDto dto, IPasswordHasher<User> hasher, ILogger<Program> logger) 
+            => Login(db, dto, hasher, logger, jwtKeyBytes, jwtIssuer, jwtAudience)).AllowAnonymous();
+        group.MapGet("/{id}/tasks", GetUserTasks).RequireAuthorization();
+        group.MapGet("/reports/new-users", GetNewUsers).RequireAuthorization();
+    }
+    
+    private static async Task<IResult> GetUsers(AppDbContext db, IMapper mapper)
+    {
+        var users = await db.Users.AsNoTracking().ToListAsync();
+        return Results.Ok(mapper.Map<List<UserDto>>(users));
+    }
+
+    private static async Task<IResult> GetUser(int id, AppDbContext db, IMapper mapper)
+    {
+        var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+        return user is null ? Results.NotFound() : Results.Ok(mapper.Map<UserDto>(user));
+    }
+
+    private static async Task<IResult> CreateUser(AppDbContext db, UserDto dto, ILogger<Program> logger, IMapper mapper)
+    {
+        // Ręczna walidacja DataAnnotations
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(dto);
+        if (!Validator.TryValidateObject(dto, validationContext, validationResults, true))
         {
-            var users = await db.Users.AsNoTracking().ToListAsync();
-            return Results.Ok(mapper.Map<List<UserDto>>(users));
-        });
+            return Results.BadRequest(validationResults.Select(x => x.ErrorMessage));
+        }
 
-        // NOWY ENDPOINT: Raport
-        app.MapGet("/reports/new-users", async (DateTime? from, DateTime? to, AppDbContext db, IMapper mapper) =>
+        var user = new User 
+        { 
+            Username = dto.Username.Trim(), 
+            Email = dto.Email.Trim(),
+            CreatedAt = DateTime.UtcNow // Ustawiamy datę
+        };
+        
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+        
+        logger.LogInformation("Utworzono nowego użytkownika: {Username} ({Email})", user.Username, user.Email);
+
+        // Użycie mappera w odpowiedzi
+        return Results.Created($"/users/{user.Id}", mapper.Map<UserDto>(user));
+    }
+
+    private static async Task<IResult> UpdateUser(int id, AppDbContext db, UserDto dto, ILogger<Program> logger)
+    {
+        // Walidacja
+        var validationResults = new List<ValidationResult>();
+        if (!Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true))
         {
-            var query = db.Users.AsNoTracking().AsQueryable();
+            return Results.BadRequest(validationResults.Select(x => x.ErrorMessage));
+        }
 
-            if (from.HasValue)
-                query = query.Where(u => u.CreatedAt >= from.Value);
-            
-            if (to.HasValue)
-                query = query.Where(u => u.CreatedAt <= to.Value);
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (user is null) return Results.NotFound();
 
-            var users = await query.ToListAsync();
-            return Results.Ok(mapper.Map<List<UserDto>>(users));
-        });
+        user.Username = dto.Username.Trim();
+        user.Email = dto.Email.Trim();
 
-        app.MapPost("/users", async (AppDbContext db, UserDto dto, ILogger<Program> logger, IMapper mapper) =>
+        try
         {
-            // Ręczna walidacja DataAnnotations
-            var validationResults = new List<ValidationResult>();
-            var validationContext = new ValidationContext(dto);
-            if (!Validator.TryValidateObject(dto, validationContext, validationResults, true))
-            {
-                return Results.BadRequest(validationResults.Select(x => x.ErrorMessage));
-            }
-
-            var user = new User 
-            { 
-                Username = dto.Username.Trim(), 
-                Email = dto.Email.Trim(),
-                CreatedAt = DateTime.UtcNow // Ustawiamy datę
-            };
-            
-            db.Users.Add(user);
             await db.SaveChangesAsync();
-            
-            logger.LogInformation("Utworzono nowego użytkownika: {Username} ({Email})", user.Username, user.Email);
-
-            // Użycie mappera w odpowiedzi
-            return Results.Created($"/users/{user.Id}", mapper.Map<UserDto>(user));
-        });
-
-        app.MapGet("/users/{id}", async (int id, AppDbContext db, IMapper mapper) =>
+            logger.LogInformation("Zaktualizowano użytkownika ID: {Id}", id);
+        }
+        catch (DbUpdateException ex)
         {
-            var user = await db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
-            return user is null ? Results.NotFound() : Results.Ok(mapper.Map<UserDto>(user));
-        });
+            logger.LogError(ex, "Błąd podczas aktualizacji użytkownika ID: {Id}", id);
+            return Results.StatusCode(500);
+        }
 
-        app.MapPut("/users/{id}", async (int id, AppDbContext db, UserDto dto, ILogger<Program> logger) =>
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> DeleteUser(int id, AppDbContext db, ILogger<Program> logger)
+    {
+        var user = await db.Users.FindAsync(id);
+        if (user is null) return Results.NotFound();
+
+        db.Users.Remove(user);
+        await db.SaveChangesAsync();
+        
+        logger.LogInformation("Usunięto użytkownika ID: {Id}", id);
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> GetUserTasks(int id, AppDbContext db)
+    {
+        var tasks = await db.UserTasks.AsNoTracking()
+            .Where(t => t.UserId == id)
+            .ToListAsync();
+        if (!tasks.Any())
         {
-            // Walidacja
-            var validationResults = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true))
-            {
-                return Results.BadRequest(validationResults.Select(x => x.ErrorMessage));
-            }
+            var exists = await db.Users.AnyAsync(u => u.Id == id);
+            return exists ? Results.Ok(tasks) : Results.NotFound();
+        }
+        return Results.Ok(tasks);
+    }
 
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if (user is null) return Results.NotFound();
+    private static async Task<IResult> Register(AppDbContext db, RegisterUserDto dto, IPasswordHasher<User> hasher)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Username) ||
+            string.IsNullOrWhiteSpace(dto.Email) ||
+            string.IsNullOrWhiteSpace(dto.Password))
+            return Results.BadRequest("Username, Email and Password are required.");
 
-            user.Username = dto.Username.Trim();
-            user.Email = dto.Email.Trim();
+        if (await db.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
+            return Results.Conflict("Username or Email already exists.");
 
-            try
-            {
-                await db.SaveChangesAsync();
-                logger.LogInformation("Zaktualizowano użytkownika ID: {Id}", id);
-            }
-            catch (DbUpdateException ex)
-            {
-                logger.LogError(ex, "Błąd podczas aktualizacji użytkownika ID: {Id}", id);
-                return Results.StatusCode(500);
-            }
-
-            return Results.NoContent();
-        });
-
-        app.MapDelete("/users/{id}", async (int id, AppDbContext db, ILogger<Program> logger) =>
+        var user = new User
         {
-            var user = await db.Users.FindAsync(id);
-            if (user is null) return Results.NotFound();
+            Username = dto.Username.Trim(),
+            Email = dto.Email.Trim()
+        };
+        user.PasswordHash = hasher.HashPassword(user, dto.Password);
 
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
-            
-            logger.LogInformation("Usunięto użytkownika ID: {Id}", id);
-            return Results.NoContent();
-        });
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
 
-        app.MapGet("/users/{id}/tasks", async (int id, AppDbContext db) =>
+        return Results.Created($"/users/{user.Id}", new { user.Id, user.Username, user.Email });
+    }
+
+    private static async Task<IResult> Login(AppDbContext db, LoginDto dto, IPasswordHasher<User> hasher, ILogger<Program> logger, byte[] jwtKeyBytes, string jwtIssuer, string jwtAudience)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
+            return Results.BadRequest("Username and Password are required.");
+
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
+        if (user is null)
         {
-            var tasks = await db.UserTasks.AsNoTracking()
-                .Where(t => t.UserId == id)
-                .ToListAsync();
-            if (!tasks.Any())
-            {
-                var exists = await db.Users.AnyAsync(u => u.Id == id);
-                return exists ? Results.Ok(tasks) : Results.NotFound();
-            }
-            return Results.Ok(tasks);
-        });
+            logger.LogWarning("Nieudana próba logowania - nieznany użytkownik: {Username}", dto.Username);
+            return Results.Unauthorized();
+        }
 
-        app.MapPost("/auth/register", async (AppDbContext db, RegisterUserDto dto, IPasswordHasher<User> hasher) =>
+        var result = hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+        if (result == PasswordVerificationResult.Failed)
         {
-            if (string.IsNullOrWhiteSpace(dto.Username) ||
-                string.IsNullOrWhiteSpace(dto.Email) ||
-                string.IsNullOrWhiteSpace(dto.Password))
-                return Results.BadRequest("Username, Email and Password are required.");
+            logger.LogWarning("Nieudana próba logowania - błędne hasło: {Username}", dto.Username);
+            return Results.Unauthorized();
+        }
 
-            if (await db.Users.AnyAsync(u => u.Username == dto.Username || u.Email == dto.Email))
-                return Results.Conflict("Username or Email already exists.");
+        var expires = DateTime.UtcNow.AddHours(1);
+        var token = CreateToken(user, jwtKeyBytes, jwtIssuer, jwtAudience, expires);
+        
+        logger.LogInformation("Użytkownik zalogowany: {Username}", dto.Username);
 
-            var user = new User
-            {
-                Username = dto.Username.Trim(),
-                Email = dto.Email.Trim()
-            };
-            user.PasswordHash = hasher.HashPassword(user, dto.Password);
-
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
-
-            return Results.Created($"/users/{user.Id}", new { user.Id, user.Username, user.Email });
-        });
-
-        app.MapPost("/auth/login", async (AppDbContext db, LoginDto dto, IPasswordHasher<User> hasher, ILogger<Program> logger) =>
-        {
-            if (string.IsNullOrWhiteSpace(dto.Username) || string.IsNullOrWhiteSpace(dto.Password))
-                return Results.BadRequest("Username and Password are required.");
-
-            var user = await db.Users.FirstOrDefaultAsync(u => u.Username == dto.Username);
-            if (user is null)
-            {
-                logger.LogWarning("Nieudana próba logowania - nieznany użytkownik: {Username}", dto.Username);
-                return Results.Unauthorized();
-            }
-
-            var result = hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
-            if (result == PasswordVerificationResult.Failed)
-            {
-                logger.LogWarning("Nieudana próba logowania - błędne hasło: {Username}", dto.Username);
-                return Results.Unauthorized();
-            }
-
-            var expires = DateTime.UtcNow.AddHours(1);
-            var token = CreateToken(user, jwtKey, jwtIssuer, jwtAudience, expires);
-            
-            logger.LogInformation("Użytkownik zalogowany: {Username}", dto.Username);
-
-            return Results.Ok(new AuthResponseDto(token, expires));
-        });
+        return Results.Ok(new AuthResponseDto(token, expires));
     }
 
     private static string CreateToken(User user, byte[] jwtKey, string? issuer, string? audience, DateTime expires)

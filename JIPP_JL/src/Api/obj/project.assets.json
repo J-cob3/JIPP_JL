@@ -5527,8 +5527,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kubal\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\kubal\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -5539,19 +5538,13 @@
       "packagesPath": "C:\\Users\\kubal\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\kubal\\Documents\\GitHub\\JIPP_JL(2)\\JIPP_JL\\JIPP_JL\\src\\Api\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\kubal\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\kubal\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

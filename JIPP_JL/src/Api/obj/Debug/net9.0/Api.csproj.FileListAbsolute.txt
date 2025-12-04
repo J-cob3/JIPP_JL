@@ -533,7 +533,6 @@ C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\Api.csproj.CoreCompileInputs.cache
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\Api.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\Api.sourcelink.json
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
