@@ -28,8 +28,10 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 // JWT Configuration
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var jwtKeyBytes = GetOrGenerateJwtKey(jwtSection);
-var jwtIssuer = jwtSection.GetValue<string>("Issuer");
-var jwtAudience = jwtSection.GetValue<string>("Audience");
+
+// Dodaj '?? "wartosc_domyslna"', aby zmienne nigdy nie były null
+var jwtIssuer = jwtSection.GetValue<string>("Issuer") ?? "https://localhost";
+var jwtAudience = jwtSection.GetValue<string>("Audience") ?? "https://localhost";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

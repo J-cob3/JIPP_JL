@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sDfyza31vuE=",
+  "dgSpecHash": "j4B5jEhqKFM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kubal\\Documents\\GitHub\\JIPP_JL(2)\\JIPP_JL\\JIPP_JL\\src\\Api\\Api.csproj",
+  "projectFilePath": "C:\\Users\\kubal\\Documents\\GitHub\\JIPP_JL\\JIPP_JL\\src\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kubal\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\kubal\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

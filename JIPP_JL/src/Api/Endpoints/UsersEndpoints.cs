@@ -196,4 +196,23 @@ public static class UsersEndpoints
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    // Dodaj tę metodę wewnątrz klasy UsersEndpoints (lub jako metodę statyczną, jeśli używasz podejścia statycznego)
+    
+    private static async Task<IResult> GetNewUsers(AppDbContext db, int days = 7)
+    {
+        var cutoffDate = DateTime.UtcNow.AddDays(-days);
+        
+        var users = await db.Users
+            .Where(u => u.CreatedAt >= cutoffDate)
+            .Select(u => new UserDto 
+            { 
+                Id = u.Id, 
+                Username = u.Username, 
+                Email = u.Email 
+            })
+            .ToListAsync();
+
+        return Results.Ok(users);
+    }
 }

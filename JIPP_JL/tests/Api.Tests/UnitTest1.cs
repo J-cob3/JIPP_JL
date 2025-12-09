@@ -2,8 +2,13 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Api.Models;
+using Api.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests
 {
@@ -173,8 +178,8 @@ namespace Api.Tests
 
     public class HealthEndpointTests : IAsyncLifetime
     {
-        private WebApplicationFactory<Program> _factory;
-        private HttpClient _client;
+        private WebApplicationFactory<Program> _factory = null!;
+        private HttpClient _client = null!;
 
         public async Task InitializeAsync()
         {
@@ -201,6 +206,151 @@ namespace Api.Tests
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Contains("\"status\":\"ok\"", content);
+        }
+    }
+
+    // --- NOWE TESTY INTEGRACYJNE (AUTH + SEEDING) ---
+
+    public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
+    {
+        private readonly HttpClient _client;
+
+        public AuthIntegrationTests(CustomWebApplicationFactory factory)
+        {
+            _client = factory.CreateClient();
+        }
+
+        [Fact]
+        public async Task Register_ValidUser_ReturnsCreated()
+        {
+            // Arrange
+            var newUser = new
+            {
+                Username = "integrationUser",
+                Email = "integration@test.com",
+                Password = "StrongPassword123!"
+            };
+
+            // Act
+            var response = await _client.PostAsJsonAsync("/auth/register", newUser);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            var createdUser = await response.Content.ReadFromJsonAsync<UserDto>();
+            Assert.NotNull(createdUser);
+            Assert.Equal(newUser.Username, createdUser.Username);
+        }
+
+        [Fact]
+        public async Task Register_DuplicateEmail_ReturnsBadRequest()
+        {
+            // Arrange - używamy danych użytkownika, który został dodany w Seedingu
+            var duplicateUser = new
+            {
+                Username = "AnotherName",
+                Email = "seeded@admin.com", // Ten email już istnieje w bazie (z seedingu)
+                Password = "NewPassword123!"
+            };
+
+            // Act
+            var response = await _client.PostAsJsonAsync("/auth/register", duplicateUser);
+
+            // Assert - Oczekujemy błędu walidacji (duplikat)
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Login_SeededUser_And_AccessProtectedResource()
+        {
+            // 1. Logowanie na użytkownika z Seedingu
+            var loginData = new
+            {
+                Username = "seededAdmin",
+                Password = "SeededPassword1!"
+            };
+
+            var loginResponse = await _client.PostAsJsonAsync("/auth/login", loginData);
+            
+            // Jeśli tu jest błąd, to znaczy że hasło w seedingu nie zostało poprawnie zapisane
+            Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
+
+            var authResult = await loginResponse.Content.ReadFromJsonAsync<AuthResponseDto>();
+            Assert.NotNull(authResult);
+            Assert.False(string.IsNullOrEmpty(authResult.Token));
+
+            // 2. Dostęp do zasobu chronionego (Tasks) bez tokena (powinien być 401)
+            // Zakładamy, że seedowany user ma ID = 1 (pierwszy w bazie in-memory)
+            var unauthorizedResponse = await _client.GetAsync("/users/1/tasks"); 
+            Assert.Equal(HttpStatusCode.Unauthorized, unauthorizedResponse.StatusCode);
+
+            // 3. Dostęp do zasobu chronionego Z tokenem
+            using var request = new HttpRequestMessage(HttpMethod.Get, "/users/1/tasks");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.Token);
+
+            var authorizedResponse = await _client.SendAsync(request);
+            
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, authorizedResponse.StatusCode);
+        }
+    }
+
+    // --- KONFIGURACJA FABRYKI I SEEDING ---
+
+    public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
+            {
+                // 1. Znajdź i usuń rejestrację prawdziwego DbContext
+                var descriptor = services.SingleOrDefault(
+                    d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
+
+                // 2. Dodaj bazę In-Memory dla testów
+                services.AddDbContext<AppDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase("IntegrationTestDb");
+                });
+
+                // 3. Zbuduj ServiceProvider, aby wykonać Seeding
+                var sp = services.BuildServiceProvider();
+
+                using (var scope = sp.CreateScope())
+                {
+                    var scopedServices = scope.ServiceProvider;
+                    var db = scopedServices.GetRequiredService<AppDbContext>();
+                    var passwordHasher = scopedServices.GetRequiredService<IPasswordHasher<User>>();
+
+                    // Upewnij się, że baza jest utworzona
+                    db.Database.EnsureCreated();
+
+                    // 4. Wykonaj Seeding użytkowników
+                    SeedUsers(db, passwordHasher);
+                }
+            });
+        }
+
+        private void SeedUsers(AppDbContext db, IPasswordHasher<User> hasher)
+        {
+            if (!db.Users.Any())
+            {
+                var adminUser = new User
+                {
+                    Username = "seededAdmin",
+                    Email = "seeded@admin.com",
+                    CreatedAt = DateTime.UtcNow // Ważne dla spójności danych
+                };
+                
+                // POPRAWKA: Przypisanie wygenerowanego hasha do właściwości obiektu
+                adminUser.PasswordHash = hasher.HashPassword(adminUser, "SeededPassword1!");
+                db.Users.Add(adminUser);
+                db.SaveChanges();
+            }
         }
     }
 }

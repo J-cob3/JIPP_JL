@@ -557,3 +557,13 @@ C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.File.dll
 C:\Users\kubal\Documents\GitHub\JIPP_JL(2)\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\AutoMapper.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.AspNetCore.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Extensions.Hosting.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Extensions.Logging.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Formatting.Compact.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Settings.Configuration.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.Console.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
+C:\Users\kubal\Documents\GitHub\JIPP_JL\JIPP_JL\src\Api\bin\Debug\net9.0\Serilog.Sinks.File.dll
